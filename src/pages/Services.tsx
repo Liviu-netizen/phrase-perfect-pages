@@ -1,6 +1,9 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Check } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/components/ui/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const ServiceSection = ({ 
   id, 
@@ -82,6 +85,43 @@ const PackageCard = ({
   features: string[]; 
   highlighted?: boolean;
 }) => {
+  const [isLoading, setIsLoading] = useState(false);
+  const { toast } = useToast();
+
+  const handlePaymentClick = async () => {
+    try {
+      setIsLoading(true);
+      
+      const priceValue = price === "Custom" ? "899.99" : price.replace('$', '');
+      
+      const { data, error } = await supabase.functions.invoke('create-payment', {
+        body: {
+          serviceTitle: title + " Package",
+          price: priceValue,
+        }
+      });
+
+      if (error) {
+        throw error;
+      }
+
+      if (data?.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error("No checkout URL received");
+      }
+    } catch (error) {
+      console.error("Payment error:", error);
+      toast({
+        title: "Payment Error",
+        description: "There was a problem creating the payment. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div 
       className={`rounded-lg shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 ${
@@ -106,16 +146,17 @@ const PackageCard = ({
         ))}
       </ul>
       
-      <a 
-        href="/contact" 
-        className={`block text-center py-3 px-6 rounded-full font-bold transition-colors ${
+      <button 
+        onClick={handlePaymentClick}
+        disabled={isLoading}
+        className={`w-full text-center py-3 px-6 rounded-full font-bold transition-colors ${
           highlighted 
-            ? 'bg-copywriter-yellow text-copywriter-navy hover:bg-white' 
-            : 'bg-copywriter-navy text-white hover:bg-copywriter-yellow hover:text-copywriter-navy'
+            ? 'bg-copywriter-yellow text-copywriter-navy hover:bg-white disabled:opacity-70' 
+            : 'bg-copywriter-navy text-white hover:bg-copywriter-yellow hover:text-copywriter-navy disabled:opacity-70'
         }`}
       >
-        Select Plan
-      </a>
+        {isLoading ? "Processing..." : "Purchase Now"}
+      </button>
     </div>
   );
 };
