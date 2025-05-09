@@ -9,6 +9,12 @@ export const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Function to track page views
 export const trackPageView = async (page: string) => {
+  // If Supabase credentials aren't set, just log and return
+  if (!supabaseUrl || !supabaseKey) {
+    console.log('Supabase credentials not set, skipping page view tracking');
+    return;
+  }
+  
   try {
     const { error } = await supabase
       .from('page_views')
@@ -26,5 +32,6 @@ export const trackPageView = async (page: string) => {
     }
   } catch (err) {
     console.error('Failed to track page view:', err);
+    // Don't let tracking errors break the app
   }
 };

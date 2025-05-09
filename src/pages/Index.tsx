@@ -8,16 +8,19 @@ import Testimonials from "@/components/home/Testimonials";
 import CtaStrip from "@/components/home/CtaStrip";
 
 const Index = () => {
+  console.log("Rendering Index page");
   return (
-    <>
+    <div className="flex flex-col min-h-screen">
       <Navbar />
-      <Hero />
-      <Intro />
-      <ServicesPreview />
-      <Testimonials />
-      <CtaStrip />
+      <main>
+        <Hero />
+        <Intro />
+        <ServicesPreview />
+        <Testimonials />
+        <CtaStrip />
+      </main>
       <Footer />
-    </>
+    </div>
   );
 };
 
