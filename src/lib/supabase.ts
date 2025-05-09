@@ -1,17 +1,20 @@
 
 import { createClient } from '@supabase/supabase-js';
 
-// Initialize the Supabase client
+// Initialize the Supabase client with fallbacks for missing env vars
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-export const supabase = createClient(supabaseUrl, supabaseKey);
+// Only create the client if credentials are available
+export const supabase = supabaseUrl && supabaseKey ? 
+  createClient(supabaseUrl, supabaseKey) : 
+  null;
 
 // Function to track page views
 export const trackPageView = async (page: string) => {
-  // If Supabase credentials aren't set, just log and return
-  if (!supabaseUrl || !supabaseKey) {
-    console.log('Supabase credentials not set, skipping page view tracking');
+  // Skip tracking if Supabase isn't initialized
+  if (!supabase) {
+    console.log('Supabase not initialized, skipping page view tracking');
     return;
   }
   
