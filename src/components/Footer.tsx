@@ -10,7 +10,7 @@ const Footer = () => {
           {/* Company Info */}
           <div>
             <Link to="/" className="text-2xl font-bold mb-4 inline-block">
-              Word<span className="text-copywriter-yellow">Craft</span>
+              Liviu <span className="text-copywriter-yellow">M.C.</span>
             </Link>
             <p className="mb-4 text-gray-300">
               Crafting words that sell, persuade, and engage your audience.
@@ -62,21 +62,20 @@ const Footer = () => {
             <ul className="space-y-4">
               <li className="flex items-center">
                 <Mail className="w-5 h-5 mr-3 text-copywriter-yellow" />
-                <a href="mailto:hello@wordcraft.com" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
-                  hello@wordcraft.com
+                <a href="mailto:orders@liviuthecopywriter.com" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
+                  orders@liviuthecopywriter.com
                 </a>
               </li>
               <li className="flex items-center">
                 <Phone className="w-5 h-5 mr-3 text-copywriter-yellow" />
-                <a href="tel:+12345678901" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
-                  +1 (234) 567-8901
+                <a href="tel:+40730377130" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
+                  +4073 0377 130
                 </a>
               </li>
               <li className="flex items-start">
                 <MapPin className="w-5 h-5 mr-3 mt-1 text-copywriter-yellow" />
                 <span className="text-gray-300">
-                  123 Content Street<br />
-                  Wordville, WV 12345
+                  Bucharest, Romania
                 </span>
               </li>
             </ul>
@@ -84,7 +83,7 @@ const Footer = () => {
         </div>
         
         <div className="border-t border-gray-700 mt-12 pt-8 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} WordCraft. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} Liviu M.C. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -28,7 +28,7 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4 flex justify-between items-center">
         <Link to="/" className="text-2xl font-bold text-copywriter-navy">
-          Word<span className="text-copywriter-yellow">Craft</span>
+          Liviu<span className="text-copywriter-yellow">M.C.</span>
         </Link>
 
         {/* Desktop Navigation */}
