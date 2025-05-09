@@ -14,7 +14,7 @@ serve(async (req) => {
   }
   
   try {
-    const { serviceTitle, price, priceId } = await req.json();
+    const { serviceTitle, price } = await req.json();
     
     // Initialize Stripe with your secret key
     const stripe = new Stripe(Deno.env.get("STRIPE_SECRET_KEY") || "", {
