@@ -23,7 +23,7 @@ const About = () => {
               <div className="rounded-full overflow-hidden border-4 border-copywriter-yellow shadow-xl">
                 <img 
                   src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" 
-                  alt="Emily Parker, Copywriter" 
+                  alt="Liviu, Copywriter" 
                   className="w-full h-auto"
                 />
               </div>
@@ -33,13 +33,16 @@ const About = () => {
               <h2 className="text-2xl md:text-3xl font-bold mb-6 text-copywriter-navy">My Story</h2>
               <div className="space-y-4 font-playfair text-gray-700">
                 <p>
-                  I'm Emily Parker, the founder of WordCraft. My journey into copywriting began over a decade ago when I realized the immense power that words have to persuade, inspire, and transform.
+                  I'm Liviu, the mind behind Liviu The Copywriter. My journey began 8 years ago, when I discovered the immense power of selling through words.
                 </p>
                 <p>
-                  After earning my degree in English Literature and Marketing from Boston University, I spent five years at a top advertising agency crafting campaigns for Fortune 500 companies. While the work was exciting, I knew I wanted to help businesses of all sizes harness the power of great copy.
+                  Since then, I've been building my own brand of copywriting that helps small business owners and startups, like you, connect with customers through a loud voice and a clear message.
                 </p>
                 <p>
-                  In 2015, I founded WordCraft with a simple mission: to help businesses communicate more effectively with their customers through clear, compelling copy that converts.
+                  I started out as a freelance writer on platforms like Fiverr and Upwork, where I gained deep experience into the market and learned what different industries truly need. That experience shaped the way I work today: focused, strategic, and in-line with results.
+                </p>
+                <p>
+                  Now, here we are - just a few words on a screen between you and the message your business needs to be heard. Let's make your customers feel seen, understood, and ready to buy.
                 </p>
               </div>
             </div>
@@ -61,19 +64,28 @@ const About = () => {
                     <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>BA in English Literature & Marketing, Boston University</span>
+                    <div>
+                      <span className="font-bold">Shodan in Judo (Black Belt) (2018)</span>
+                      <p>Discipline. Focus. Strategy. Judo taught me how to think three steps ahead. practical to every campaign I write.</p>
+                    </div>
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Certified Content Marketing Specialist</span>
+                    <div>
+                      <span className="font-bold">Algorithmic Computing & C++ (2021)</span>
+                      <p>Built a strong foundation in logic, problem-solving, and structured thinking, core skills I now use to write sharp, clear copy.</p>
+                    </div>
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>SEO Copywriting Masterclass Graduate</span>
+                    <div>
+                      <span className="font-bold">Web & Graphic Design / UI & UX Design (2022)</span>
+                      <p>Learned how to make brands look good and feel right. I apply design thinking to craft copy that not only reads well, but fits perfectly into digital experiences.</p>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -85,19 +97,19 @@ const About = () => {
                     <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>5+ years at Johnston & Partners Advertising</span>
+                    <div>
+                      <span className="font-bold">8 Years of Freelance Copywriting</span>
+                      <p>Built my career on platforms like Fiverr, working with diverse clients and learning what makes audiences click & buy</p>
+                    </div>
                   </li>
                   <li className="flex items-start">
                     <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                     </svg>
-                    <span>Worked with 100+ businesses across tech, health, finance, and e-commerce</span>
-                  </li>
-                  <li className="flex items-start">
-                    <svg className="w-5 h-5 text-copywriter-yellow mr-2 mt-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    <span>Published in Marketing Weekly and Content Creator Magazine</span>
+                    <div>
+                      <span className="font-bold">Hands-On Work Across Industries</span>
+                      <p>I've held roles in sectors ranging from social media to legal affairs. That real world experience taught me how different industries operate, and now I bring that knowledge into every word I write.</p>
+                    </div>
                   </li>
                 </ul>
               </div>
@@ -113,7 +125,7 @@ const About = () => {
             <blockquote className="bg-copywriter-navy text-white p-10 rounded-lg shadow-lg relative">
               <div className="absolute -top-5 left-10 text-copywriter-yellow text-6xl">"</div>
               <p className="text-xl md:text-2xl font-playfair italic mb-8 relative z-10">
-                Emily has an uncanny ability to capture a brand's voice perfectly. She's our go-to copywriter for all our major campaigns, and the results speak for themselves.
+                Liviu has an uncanny ability to capture a brand's voice perfectly. He's our go-to copywriter for all our major campaigns, and the results speak for themselves.
               </p>
               <div className="flex items-center">
                 <div className="mr-4">

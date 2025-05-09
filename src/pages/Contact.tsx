@@ -1,4 +1,3 @@
-
 import { useState, FormEvent } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import Navbar from "@/components/Navbar";
@@ -32,7 +31,6 @@ const Contact = () => {
       toast({
         title: "Message sent successfully!",
         description: "Thanks for reaching out. I'll get back to you soon.",
-        variant: "success"
       });
       setFormData({
         name: "",
@@ -45,7 +43,7 @@ const Contact = () => {
   };
   
   const copyEmail = () => {
-    navigator.clipboard.writeText("hello@wordcraft.com");
+    navigator.clipboard.writeText("orders@liviuthecopywriter.com");
     setIsCopied(true);
     
     toast({
@@ -65,7 +63,7 @@ const Contact = () => {
       {/* Contact Header */}
       <section className="pt-32 pb-16 bg-copywriter-navy text-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">Contact Us</h1>
           <div className="h-1 w-24 bg-copywriter-yellow mx-auto mb-8"></div>
           <p className="text-xl max-w-3xl mx-auto">
             Have a project in mind or questions about my services? I'd love to hear from you!
@@ -87,8 +85,8 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold text-lg mb-1">Email</h3>
                     <div className="flex items-center">
-                      <a href="mailto:hello@wordcraft.com" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
-                        hello@wordcraft.com
+                      <a href="mailto:orders@liviuthecopywriter.com" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
+                        orders@liviuthecopywriter.com
                       </a>
                       <button 
                         onClick={copyEmail}
@@ -105,8 +103,8 @@ const Contact = () => {
                   <Phone className="w-6 h-6 text-copywriter-yellow mr-4 mt-1" />
                   <div>
                     <h3 className="font-bold text-lg mb-1">Phone</h3>
-                    <a href="tel:+12345678901" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
-                      +1 (234) 567-8901
+                    <a href="tel:+40730377130" className="text-gray-300 hover:text-copywriter-yellow transition-colors">
+                      +4073 0377 130
                     </a>
                   </div>
                 </div>
@@ -116,9 +114,7 @@ const Contact = () => {
                   <div>
                     <h3 className="font-bold text-lg mb-1">Office</h3>
                     <address className="text-gray-300 not-italic">
-                      123 Content Street<br />
-                      Wordville, WV 12345<br />
-                      United States
+                      Bucharest, Romania
                     </address>
                   </div>
                 </div>

@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Check } from "lucide-react";
@@ -146,21 +145,19 @@ const Services = () => {
     {
       id: "website",
       title: "Website Copy",
-      description: "Convert more visitors into customers with website copy that engages, persuades, and drives action.",
+      description: "Your visitors, now customers, with a clean website copy that makes them scroll, book, and buy.",
       image: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
       deliverables: [
-        "Homepage copy that clearly communicates your unique value proposition",
-        "About page that tells your brand's story in a compelling way",
+        "Homepage copy that clearly communicates your value proposition",
+        "About page that tells your brand's story",
         "Product/service descriptions that highlight benefits, not just features",
-        "SEO-optimized content that ranks in search results",
         "Call-to-action text that drives conversions"
       ],
       benefits: [
-        "Higher conversion rates from website visitors",
+        "More visitors will now become customers",
         "Reduced bounce rates as visitors stay engaged",
-        "Clear brand messaging that resonates with your target audience",
-        "Improved search engine rankings with SEO-focused copy",
-        "Professional tone that builds trust with potential customers"
+        "Clear brand messaging that speaks to your target audience",
+        "Tailored tone that builds trust with potential customers"
       ]
     },
     {
@@ -170,15 +167,14 @@ const Services = () => {
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
       deliverables: [
         "Welcome email sequence to onboard new subscribers",
-        "Promotional emails that drive action without being pushy",
+        "Promotional emails that drive action without being pushy or aggressive",
         "Nurture sequences to build relationships with your audience",
         "Re-engagement campaigns to win back inactive subscribers",
         "Subject lines and preview text that boost open rates"
       ],
       benefits: [
-        "Higher email open rates with compelling subject lines",
-        "Increased click-through rates with persuasive copy",
-        "More conversions from email to your website",
+        "More potential clients will open your emails through powerful subject lines",
+        "More clients will visit your website from the email",
         "Stronger relationships with your audience",
         "Consistent brand voice across all communications"
       ]
@@ -186,7 +182,7 @@ const Services = () => {
     {
       id: "content",
       title: "Content Writing",
-      description: "Establish your authority and attract organic traffic with high-quality blog posts and articles.",
+      description: "Establish your expertise and attract organic traffic with high-quality blog posts and articles.",
       image: "https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80",
       deliverables: [
         "SEO-optimized blog posts that target strategic keywords",
@@ -208,7 +204,7 @@ const Services = () => {
   const packages = [
     {
       title: "Essential",
-      price: "$997",
+      price: "$99.99",
       description: "Perfect for small businesses looking to improve specific pieces of copy.",
       features: [
         "Single page website copy OR",
@@ -221,7 +217,7 @@ const Services = () => {
     },
     {
       title: "Professional",
-      price: "$2,497",
+      price: "$299.99",
       description: "Comprehensive solution for businesses needing full website or campaign copy.",
       features: [
         "Full 5-page website copy OR",
@@ -236,8 +232,8 @@ const Services = () => {
     },
     {
       title: "Enterprise",
-      price: "Custom",
-      description: "Tailored solutions for larger businesses with ongoing copy needs.",
+      price: "$899.99",
+      description: "Tailored solutions at a fixed price, for larger businesses with ongoing copy needs.",
       features: [
         "Custom scope based on your needs",
         "Unlimited revisions",
@@ -298,10 +294,10 @@ const Services = () => {
           <div className="max-w-3xl mx-auto text-center">
             <h2 className="text-3xl font-bold mb-6 text-copywriter-navy">My Approach to Copywriting</h2>
             <p className="text-lg mb-6 text-gray-700">
-              I believe that effective copy isn't just about pretty words—it's about strategic communication that drives results. My process combines research, strategy, and creativity to create copy that resonates with your audience and compels them to take action.
+              First off, Forget about ChatGPT copy & Paste content. My approach to copywriting is old school, going through deep industry research, dissecting the audience, identifying your target customer, and then writing your message.
             </p>
             <p className="text-lg text-gray-700">
-              Whether you're looking to launch a new website, create an email campaign, or develop ongoing content, I'll craft copy that captures your brand voice and meets your business goals.
+              What do you have to do? Book a service or a call. Keep scrolling to see how I can help you.
             </p>
           </div>
         </div>
@@ -331,7 +327,8 @@ const Services = () => {
             <h2 className="text-3xl font-bold mb-4 text-copywriter-navy">Packages & Pricing</h2>
             <div className="h-1 w-24 bg-copywriter-yellow mx-auto mb-8"></div>
             <p className="text-lg max-w-2xl mx-auto text-gray-700">
-              Choose the package that best fits your needs, or contact me for a custom solution tailored to your specific requirements.
+              Spiked your interest?
+              <br />Pick the package that fits you best - or hit me up for a custom solution that speaks directly to your business, no guesswork included.
             </p>
           </div>
           
