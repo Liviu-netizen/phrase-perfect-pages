@@ -48,7 +48,10 @@ const Navbar = () => {
 
         {/* Mobile Menu Button */}
         <button 
-          className="md:hidden text-copywriter-navy"
+          className={cn(
+            "md:hidden transition-colors",
+            isScrolled ? "text-copywriter-navy" : "text-white"
+          )}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
         >
           <svg 
@@ -69,7 +72,7 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         {mobileMenuOpen && (
-          <div className="absolute top-full left-0 w-full bg-white shadow-lg py-4 md:hidden">
+          <div className="absolute top-full left-0 w-full bg-white shadow-lg py-4 md:hidden z-40">
             <div className="flex flex-col items-center space-y-4">
               {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
                 <Link
