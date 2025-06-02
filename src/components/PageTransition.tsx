@@ -8,24 +8,24 @@ interface PageTransitionProps {
 
 const PageTransition = ({ children }: PageTransitionProps) => {
   const location = useLocation();
-  const [isVisible, setIsVisible] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [displayLocation, setDisplayLocation] = useState(location);
 
   useEffect(() => {
-    // Start fade out
-    setIsVisible(false);
-    
-    // After fade out completes, fade in with new content
-    const timer = setTimeout(() => {
-      setIsVisible(true);
-    }, 150);
-
-    return () => clearTimeout(timer);
-  }, [location.pathname]);
+    if (location !== displayLocation) {
+      setIsVisible(false);
+    }
+  }, [location, displayLocation]);
 
   useEffect(() => {
-    // Initial load
-    setIsVisible(true);
-  }, []);
+    if (!isVisible) {
+      const timer = setTimeout(() => {
+        setDisplayLocation(location);
+        setIsVisible(true);
+      }, 150);
+      return () => clearTimeout(timer);
+    }
+  }, [isVisible, location]);
 
   return (
     <div 
