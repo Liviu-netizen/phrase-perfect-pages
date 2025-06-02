@@ -1,5 +1,5 @@
 
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { FileText, Globe, Mail } from 'lucide-react';
 
 const ServiceBox = ({ 
@@ -13,9 +13,25 @@ const ServiceBox = ({
   description: string; 
   link: string;
 }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    // Navigate to services page first, then scroll to the anchor
-    window.location.href = link;
+    // Extract the hash from the link (e.g., "#website" from "/services#website")
+    const hash = link.split('#')[1];
+    
+    // Navigate to services page first
+    navigate('/services');
+    
+    // Then scroll to the specific section after a short delay to ensure the page has loaded
+    setTimeout(() => {
+      const element = document.getElementById(hash);
+      if (element) {
+        element.scrollIntoView({ 
+          behavior: 'smooth',
+          block: 'start'
+        });
+      }
+    }, 100);
   };
 
   return (
