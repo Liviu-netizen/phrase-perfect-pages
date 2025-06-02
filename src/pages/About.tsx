@@ -153,21 +153,21 @@ const About = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="mb-4 text-4xl text-copywriter-yellow">🏃‍♀️</div>
-                <h3 className="font-bold mb-2 text-copywriter-navy">Trail Running</h3>
-                <p className="text-gray-700">I find my best ideas come during long runs in nature.</p>
+                <div className="mb-4 text-4xl text-copywriter-yellow">🥋</div>
+                <h3 className="font-bold mb-2 text-copywriter-navy">Rolling on the Mats</h3>
+                <p className="text-gray-700">In the jiu-jitsu gym, where strategy meets sweat and every roll teaches me something new about persistence.</p>
               </div>
               
               <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="mb-4 text-4xl text-copywriter-yellow">📚</div>
-                <h3 className="font-bold mb-2 text-copywriter-navy">Reading</h3>
-                <p className="text-gray-700">Always working through my towering "to read" pile.</p>
+                <div className="mb-4 text-4xl text-copywriter-yellow">🥩</div>
+                <h3 className="font-bold mb-2 text-copywriter-navy">Cooking Steak</h3>
+                <p className="text-gray-700">Perfecting the art of the perfect sear, because great things take time and attention to detail.</p>
               </div>
               
               <div className="bg-white p-6 rounded-lg shadow-md text-center">
-                <div className="mb-4 text-4xl text-copywriter-yellow">🧁</div>
-                <h3 className="font-bold mb-2 text-copywriter-navy">Baking</h3>
-                <p className="text-gray-700">Amateur pastry chef and sourdough enthusiast.</p>
+                <div className="mb-4 text-4xl text-copywriter-yellow">💕</div>
+                <h3 className="font-bold mb-2 text-copywriter-navy">With My Lovely Wife</h3>
+                <p className="text-gray-700">Sharing life's best moments with the woman who keeps me grounded and inspired every single day.</p>
               </div>
             </div>
           </div>
