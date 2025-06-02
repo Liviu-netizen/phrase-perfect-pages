@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -9,7 +10,7 @@ const About = () => {
       {/* About Header */}
       <section className="pt-32 pb-16 bg-copywriter-navy text-white">
         <div className="container mx-auto px-4 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-6">About WordCraft</h1>
+          <h1 className="text-4xl md:text-5xl font-bold mb-6">About Liviu</h1>
           <div className="h-1 w-24 bg-copywriter-yellow mx-auto"></div>
         </div>
       </section>

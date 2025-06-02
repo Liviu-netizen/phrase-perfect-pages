@@ -11,25 +11,25 @@ interface Testimonial {
 const Testimonials = () => {
   const testimonials: Testimonial[] = [
     {
-      quote: "Emily transformed our website copy and we saw a 35% increase in conversions within the first month. Her ability to understand our audience and speak directly to their needs was remarkable.",
+      quote: "Liviu transformed our website copy and we saw a 35% increase in conversions within the first month. His ability to understand our audience and speak directly to their needs was remarkable.",
       author: "Sarah Johnson",
       position: "Marketing Director",
       company: "TechStart Inc."
     },
     {
-      quote: "Working with WordCraft was a game-changer for our email campaigns. Open rates increased by 22% and we've seen a significant boost in customer engagement.",
+      quote: "Working with Liviu was a game-changer for our email campaigns. Open rates increased by 22% and we've seen a significant boost in customer engagement.",
       author: "Michael Chen",
       position: "CEO",
       company: "Bright Solutions"
     },
     {
-      quote: "Emily has an incredible talent for finding the perfect words to tell our story. Our brand voice has never been stronger or more consistent across all our platforms.",
+      quote: "Liviu has an incredible talent for finding the perfect words to tell our story. Our brand voice has never been stronger or more consistent across all our platforms.",
       author: "Rebecca Adams",
       position: "Brand Manager",
       company: "Modern Living"
     },
     {
-      quote: "I was struggling to articulate what makes my business unique. WordCraft not only helped me find my voice but created copy that genuinely resonates with my ideal clients.",
+      quote: "I was struggling to articulate what makes my business unique. Liviu not only helped me find my voice but created copy that genuinely resonates with my ideal clients.",
       author: "David Torres",
       position: "Founder",
       company: "Artisan Design Co."
