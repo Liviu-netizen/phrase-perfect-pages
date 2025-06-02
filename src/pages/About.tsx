@@ -1,4 +1,3 @@
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
@@ -22,7 +21,7 @@ const About = () => {
             <div className="md:w-1/3">
               <div className="rounded-full overflow-hidden border-4 border-copywriter-yellow shadow-xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=688&q=80" 
+                  src="/lovable-uploads/120b09a7-234d-4c15-9081-e59976c75d70.png" 
                   alt="Liviu, Copywriter" 
                   className="w-full h-auto"
                 />
