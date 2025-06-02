@@ -13,17 +13,19 @@ const ServiceBox = ({
   description: string; 
   link: string;
 }) => {
+  const handleClick = () => {
+    // Navigate to services page first, then scroll to the anchor
+    window.location.href = link;
+  };
+
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 transition-all duration-300 hover:shadow-xl group cursor-pointer">
+    <div className="bg-white rounded-lg shadow-lg p-8 transition-all duration-300 hover:shadow-xl group cursor-pointer" onClick={handleClick}>
       <div className="mb-6 text-copywriter-navy group-hover:text-copywriter-yellow transition-colors duration-300">
         {icon}
       </div>
       <h3 className="text-2xl font-bold mb-4 text-copywriter-navy">{title}</h3>
       <p className="text-gray-700 mb-6">{description}</p>
-      <Link 
-        to={link} 
-        className="inline-flex items-center text-copywriter-navy font-bold group-hover:text-copywriter-yellow transition-colors"
-      >
+      <div className="inline-flex items-center text-copywriter-navy font-bold group-hover:text-copywriter-yellow transition-colors">
         Learn More
         <svg 
           xmlns="http://www.w3.org/2000/svg" 
@@ -39,7 +41,7 @@ const ServiceBox = ({
             d="M14 5l7 7m0 0l-7 7m7-7H3" 
           />
         </svg>
-      </Link>
+      </div>
     </div>
   );
 };
