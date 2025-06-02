@@ -21,7 +21,7 @@ const About = () => {
             <div className="md:w-1/3">
               <div className="rounded-full overflow-hidden border-4 border-copywriter-yellow shadow-xl">
                 <img 
-                  src="https://i.ibb.co/G30nmbw/image.png" 
+                  src="https://i.ibb.co/Wp6GCY9F/IMG-20240717-105814.jpg" 
                   alt="Liviu, Copywriter" 
                   className="w-full h-auto object-cover"
                 />
