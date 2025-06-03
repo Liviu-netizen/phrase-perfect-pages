@@ -13,7 +13,9 @@ import Portfolio from "./pages/Portfolio";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
 import PaymentSuccess from "./pages/PaymentSuccess";
+import ChatAdminPage from "./pages/ChatAdmin";
 import ScrollToTop from "./components/ScrollToTop";
+import FloatingChatbot from "./components/chat/FloatingChatbot";
 
 // Analytics tracker component
 const PageTracker = () => {
@@ -57,8 +59,10 @@ const App = () => {
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/chat-admin" element={<ChatAdminPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
+          <FloatingChatbot />
           <Toaster />
           <Sonner />
         </BrowserRouter>
