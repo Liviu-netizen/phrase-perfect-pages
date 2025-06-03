@@ -10,8 +10,9 @@ import { cn } from "@/lib/utils";
 
 interface Message {
   id: string;
+  conversation_id: string;
   message: string;
-  sender_type: 'visitor' | 'admin';
+  sender_type: string;
   created_at: string;
 }
 
