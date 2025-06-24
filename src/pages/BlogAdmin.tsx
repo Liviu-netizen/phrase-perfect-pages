@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,7 +8,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
-import { Plus, Edit, Trash2, Save, X } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Plus, Edit, Trash2, Save, X, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
 interface BlogPost {
@@ -19,6 +21,12 @@ interface BlogPost {
   date: string;
   image: string;
   content?: string;
+}
+
+interface Subscriber {
+  id: number;
+  email: string;
+  subscribedAt: string;
 }
 
 const categoryColors = {
@@ -35,8 +43,10 @@ const BlogAdmin = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [accessKey, setAccessKey] = useState("");
   const [posts, setPosts] = useState<BlogPost[]>([]);
+  const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState("");
   const { toast } = useToast();
   const navigate = useNavigate();
 
@@ -66,7 +76,6 @@ const BlogAdmin = () => {
         image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
         content: "Sample content for blog post 2..."
       }
-      // Add more posts as needed
     ];
     
     const savedPosts = localStorage.getItem('blogPosts');
@@ -76,6 +85,12 @@ const BlogAdmin = () => {
       setPosts(initialPosts);
       localStorage.setItem('blogPosts', JSON.stringify(initialPosts));
     }
+
+    // Load newsletter subscribers
+    const savedSubscribers = localStorage.getItem('newsletterSubscribers');
+    if (savedSubscribers) {
+      setSubscribers(JSON.parse(savedSubscribers));
+    }
   }, []);
 
   const handleLogin = () => {
@@ -83,7 +98,7 @@ const BlogAdmin = () => {
       setIsAuthenticated(true);
       toast({
         title: "Access granted",
-        description: "Welcome to the blog admin panel.",
+        description: "Welcome to the admin panel.",
       });
     } else {
       toast({
@@ -94,6 +109,7 @@ const BlogAdmin = () => {
     }
   };
 
+  // Blog management functions
   const handleSavePost = () => {
     if (!editingPost) return;
 
@@ -142,12 +158,43 @@ const BlogAdmin = () => {
     setIsDrawerOpen(true);
   };
 
+  // Newsletter management functions
+  const deleteSubscriber = (id: number) => {
+    const updated = subscribers.filter(sub => sub.id !== id);
+    setSubscribers(updated);
+    localStorage.setItem('newsletterSubscribers', JSON.stringify(updated));
+    toast({
+      title: "Subscriber removed",
+      description: "The subscriber has been removed from the list",
+    });
+  };
+
+  const exportSubscribers = () => {
+    const csvContent = "data:text/csv;charset=utf-8," 
+      + "Email,Subscribed Date\n"
+      + subscribers.map(sub => 
+          `${sub.email},${new Date(sub.subscribedAt).toLocaleDateString()}`
+        ).join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "newsletter_subscribers.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const filteredSubscribers = subscribers.filter(sub =>
+    sub.email.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center">Blog Admin Access</CardTitle>
+            <CardTitle className="text-center">Admin Access</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4">
             <Input
@@ -177,70 +224,182 @@ const BlogAdmin = () => {
     <div className="min-h-screen bg-gray-50 p-4">
       <div className="container mx-auto max-w-6xl">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold">Blog Admin Panel</h1>
-          <div className="space-x-2">
-            <Button onClick={handleNewPost}>
-              <Plus className="w-4 h-4 mr-2" />
-              New Post
-            </Button>
-            <Button variant="outline" onClick={() => navigate('/')}>
-              Back to Home
-            </Button>
-          </div>
+          <h1 className="text-3xl font-bold">Admin Panel</h1>
+          <Button variant="outline" onClick={() => navigate('/')}>
+            Back to Home
+          </Button>
         </div>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>Manage Blog Posts</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title</TableHead>
-                  <TableHead>Category</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Read Time</TableHead>
-                  <TableHead>Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {posts.map((post) => (
-                  <TableRow key={post.id}>
-                    <TableCell className="font-medium max-w-xs truncate">
-                      {post.title}
-                    </TableCell>
-                    <TableCell>
-                      <Badge className={categoryColors[post.category as keyof typeof categoryColors]}>
-                        {post.category}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>{post.date}</TableCell>
-                    <TableCell>{post.readTime}</TableCell>
-                    <TableCell>
-                      <div className="flex space-x-2">
+        <Tabs defaultValue="blog" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="blog">Blog Management</TabsTrigger>
+            <TabsTrigger value="newsletter">Newsletter Management</TabsTrigger>
+          </TabsList>
+          
+          <TabsContent value="blog" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold">Manage Blog Posts</h2>
+              <Button onClick={handleNewPost}>
+                <Plus className="w-4 h-4 mr-2" />
+                New Post
+              </Button>
+            </div>
+
+            <Card>
+              <CardContent className="pt-6">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Title</TableHead>
+                      <TableHead>Category</TableHead>
+                      <TableHead>Date</TableHead>
+                      <TableHead>Read Time</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {posts.map((post) => (
+                      <TableRow key={post.id}>
+                        <TableCell className="font-medium max-w-xs truncate">
+                          {post.title}
+                        </TableCell>
+                        <TableCell>
+                          <Badge className={categoryColors[post.category as keyof typeof categoryColors]}>
+                            {post.category}
+                          </Badge>
+                        </TableCell>
+                        <TableCell>{post.date}</TableCell>
+                        <TableCell>{post.readTime}</TableCell>
+                        <TableCell>
+                          <div className="flex space-x-2">
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              onClick={() => handleEditPost(post)}
+                            >
+                              <Edit className="w-3 h-3" />
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant="destructive"
+                              onClick={() => handleDeletePost(post.id)}
+                            >
+                              <Trash2 className="w-3 h-3" />
+                            </Button>
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="newsletter" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold">Newsletter Management</h2>
+              <Button onClick={exportSubscribers} className="flex items-center gap-2">
+                <Download className="w-4 h-4" />
+                Export CSV
+              </Button>
+            </div>
+
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Subscribers</CardTitle>
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">{subscribers.length}</div>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">This Month</CardTitle>
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {subscribers.filter(sub => {
+                      const subDate = new Date(sub.subscribedAt);
+                      const now = new Date();
+                      return subDate.getMonth() === now.getMonth() && 
+                             subDate.getFullYear() === now.getFullYear();
+                    }).length}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">This Week</CardTitle>
+                  <Mail className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">
+                    {subscribers.filter(sub => {
+                      const subDate = new Date(sub.subscribedAt);
+                      const now = new Date();
+                      const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                      return subDate >= weekAgo;
+                    }).length}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+
+            {/* Search */}
+            <div>
+              <Input
+                placeholder="Search subscribers..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="max-w-md"
+              />
+            </div>
+
+            {/* Subscribers List */}
+            <Card>
+              <CardHeader>
+                <CardTitle>Subscribers ({filteredSubscribers.length})</CardTitle>
+              </CardHeader>
+              <CardContent>
+                {filteredSubscribers.length === 0 ? (
+                  <p className="text-gray-500 text-center py-8">
+                    {searchTerm ? "No subscribers found matching your search." : "No subscribers yet."}
+                  </p>
+                ) : (
+                  <div className="space-y-4">
+                    {filteredSubscribers.map((subscriber) => (
+                      <div
+                        key={subscriber.id}
+                        className="flex items-center justify-between p-4 border border-gray-200 rounded-lg"
+                      >
+                        <div>
+                          <p className="font-medium">{subscriber.email}</p>
+                          <p className="text-sm text-gray-500">
+                            Subscribed: {new Date(subscriber.subscribedAt).toLocaleDateString()}
+                          </p>
+                        </div>
                         <Button
-                          size="sm"
-                          variant="outline"
-                          onClick={() => handleEditPost(post)}
-                        >
-                          <Edit className="w-3 h-3" />
-                        </Button>
-                        <Button
-                          size="sm"
                           variant="destructive"
-                          onClick={() => handleDeletePost(post.id)}
+                          size="sm"
+                          onClick={() => deleteSubscriber(subscriber.id)}
                         >
-                          <Trash2 className="w-3 h-3" />
+                          <Trash2 className="w-4 h-4" />
                         </Button>
                       </div>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
-          </CardContent>
-        </Card>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+        </Tabs>
 
         {/* Edit/Create Post Drawer */}
         <Drawer open={isDrawerOpen} onOpenChange={setIsDrawerOpen}>
