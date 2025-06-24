@@ -1,5 +1,5 @@
-
 import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
@@ -17,94 +17,6 @@ interface BlogPost {
   content: string;
 }
 
-const blogPosts: BlogPost[] = [
-  {
-    id: 1,
-    title: "How to Write Website Copy That Actually Converts Visitors into Customers",
-    category: "SEO & Strategy",
-    excerpt: "Discover the proven strategies and techniques that turn casual browsers into paying customers through compelling website copy.",
-    readTime: "8 min read",
-    date: "Dec 20, 2024",
-    image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=800&h=400&fit=crop",
-    content: `
-      <h2>The Foundation: Understanding Your Audience</h2>
-      <p>Before you write a single word, you need to understand who you're writing for. The most converting copy speaks directly to your audience's pain points, desires, and motivations.</p>
-      
-      <h3>Research Your Ideal Customer</h3>
-      <p>Start by creating detailed buyer personas. What keeps your customers awake at night? What are their goals? What language do they use when describing their problems?</p>
-      
-      <h2>The AIDA Framework</h2>
-      <p>Use the proven AIDA formula to structure your copy:</p>
-      <ul>
-        <li><strong>Attention:</strong> Grab their attention with a compelling headline</li>
-        <li><strong>Interest:</strong> Keep them engaged with relevant benefits</li>
-        <li><strong>Desire:</strong> Build desire by showing transformation</li>
-        <li><strong>Action:</strong> Guide them to take the next step</li>
-      </ul>
-      
-      <h2>Write Headlines That Hook</h2>
-      <p>Your headline is the first thing visitors see. Make it count by:</p>
-      <ul>
-        <li>Leading with a clear benefit</li>
-        <li>Using numbers and specifics</li>
-        <li>Creating urgency or curiosity</li>
-        <li>Speaking your audience's language</li>
-      </ul>
-      
-      <h2>Focus on Benefits, Not Features</h2>
-      <p>Don't just tell people what your product does—tell them what it will do for them. Transform features into benefits by asking "so what?" after every feature you list.</p>
-      
-      <h2>Use Social Proof</h2>
-      <p>Include testimonials, reviews, case studies, and logos of well-known clients to build trust and credibility.</p>
-      
-      <h2>Create Urgency</h2>
-      <p>Give people a reason to act now rather than later. Use limited-time offers, scarcity, or emphasize the cost of inaction.</p>
-      
-      <h2>Test and Optimize</h2>
-      <p>The best copy is always tested. Use A/B testing to continuously improve your conversion rates.</p>
-    `
-  },
-  {
-    id: 2,
-    title: "The 7 Most Common Copywriting Mistakes (And How to Fix Them)",
-    category: "SEO & Strategy",
-    excerpt: "Learn about the critical copywriting errors that could be costing you sales and how to avoid them.",
-    readTime: "6 min read",
-    date: "Dec 18, 2024",
-    image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=800&h=400&fit=crop",
-    content: `
-      <h2>Mistake #1: Writing About Features Instead of Benefits</h2>
-      <p>The biggest mistake copywriters make is focusing on what their product does instead of what it does for the customer.</p>
-      <p><strong>How to fix it:</strong> For every feature, ask "So what?" until you get to the real benefit.</p>
-      
-      <h2>Mistake #2: Using Industry Jargon</h2>
-      <p>Your customers don't speak your internal language. Avoid technical terms and industry jargon that confuse rather than clarify.</p>
-      <p><strong>How to fix it:</strong> Write like you're explaining to a friend. Use simple, clear language.</p>
-      
-      <h2>Mistake #3: Weak Headlines</h2>
-      <p>Your headline is your first impression. If it doesn't grab attention, nothing else matters.</p>
-      <p><strong>How to fix it:</strong> Write 10 headlines for every piece of copy, then pick the strongest one.</p>
-      
-      <h2>Mistake #4: No Clear Call-to-Action</h2>
-      <p>If you don't tell people what to do next, they won't do anything.</p>
-      <p><strong>How to fix it:</strong> Include one clear, specific call-to-action per page.</p>
-      
-      <h2>Mistake #5: Writing for Everyone</h2>
-      <p>When you try to appeal to everyone, you appeal to no one.</p>
-      <p><strong>How to fix it:</strong> Define your ideal customer and write specifically for them.</p>
-      
-      <h2>Mistake #6: Ignoring the Customer's Journey</h2>
-      <p>Different stages of awareness require different types of copy.</p>
-      <p><strong>How to fix it:</strong> Match your message to where your customer is in their buying journey.</p>
-      
-      <h2>Mistake #7: Not Testing</h2>
-      <p>Good copy can always become great copy through testing.</p>
-      <p><strong>How to fix it:</strong> Set up A/B tests for headlines, CTAs, and key messages.</p>
-    `
-  }
-  // Add more blog posts with full content as needed
-];
-
 const categoryColors = {
   "SEO & Strategy": "bg-blue-100 text-blue-800",
   "Client-Focused": "bg-green-100 text-green-800",
@@ -116,8 +28,17 @@ const categoryColors = {
 const BlogPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
   
-  const blogPost = blogPosts.find(post => post.id === parseInt(id || ''));
+  useEffect(() => {
+    // Load blog posts from localStorage and find the specific post
+    const savedPosts = localStorage.getItem('blogPosts');
+    if (savedPosts) {
+      const posts: BlogPost[] = JSON.parse(savedPosts);
+      const post = posts.find(p => p.id === parseInt(id || ''));
+      setBlogPost(post || null);
+    }
+  }, [id]);
   
   if (!blogPost) {
     return (
@@ -192,7 +113,7 @@ const BlogPost = () => {
             <div className="max-w-4xl mx-auto">
               <div 
                 className="prose prose-lg max-w-none"
-                dangerouslySetInnerHTML={{ __html: blogPost.content }}
+                dangerouslySetInnerHTML={{ __html: blogPost.content || blogPost.excerpt }}
               />
               
               {/* Author Bio */}

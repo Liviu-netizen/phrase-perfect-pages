@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -18,6 +17,7 @@ import PaymentSuccess from "./pages/PaymentSuccess";
 import ChatAdminPage from "./pages/ChatAdmin";
 import ScrollToTop from "./components/ScrollToTop";
 import FloatingChatbot from "./components/chat/FloatingChatbot";
+import BlogAdmin from "./pages/BlogAdmin";
 
 // Analytics tracker component
 const PageTracker = () => {
@@ -64,6 +64,7 @@ const App = () => {
             <Route path="/contact" element={<Contact />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/chat-admin" element={<ChatAdminPage />} />
+            <Route path="/blog-admin" element={<BlogAdmin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <FloatingChatbot />
