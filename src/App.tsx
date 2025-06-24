@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -66,7 +67,7 @@ const App = () => {
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/chat-admin" element={<ChatAdminPage />} />
             <Route path="/blog-admin" element={<BlogAdmin />} />
-            <Route path="/admin-newsletter/NLnl19952004#" element={<NewsletterAdmin />} />
+            <Route path="/admin-newsletter/NLnl19952004%23" element={<NewsletterAdmin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <FloatingChatbot />

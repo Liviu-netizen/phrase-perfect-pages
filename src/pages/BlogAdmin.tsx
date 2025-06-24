@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -41,8 +40,8 @@ const BlogAdmin = () => {
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Simple access key - in production, this should be more secure
-  const ADMIN_ACCESS_KEY = "blogadmin2024";
+  // Updated access key to match the newsletter admin
+  const ADMIN_ACCESS_KEY = "NLnl19952004#";
 
   useEffect(() => {
     // Load initial blog posts data
