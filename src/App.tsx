@@ -12,6 +12,7 @@ import Services from "./pages/Services";
 import Portfolio from "./pages/Portfolio";
 import Contact from "./pages/Contact";
 import Blog from "./pages/Blog";
+import BlogPost from "./pages/BlogPost";
 import NotFound from "./pages/NotFound";
 import PaymentSuccess from "./pages/PaymentSuccess";
 import ChatAdminPage from "./pages/ChatAdmin";
@@ -59,6 +60,7 @@ const App = () => {
             <Route path="/services" element={<Services />} />
             <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/blog" element={<Blog />} />
+            <Route path="/blog/:id" element={<BlogPost />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/chat-admin" element={<ChatAdminPage />} />

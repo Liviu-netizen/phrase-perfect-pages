@@ -1,9 +1,9 @@
-
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 interface BlogPost {
   id: number;
@@ -253,6 +253,11 @@ const categoryColors = {
 
 const Blog = () => {
   console.log("Rendering Blog page");
+  const navigate = useNavigate();
+
+  const handlePostClick = (postId: number) => {
+    navigate(`/blog/${postId}`);
+  };
 
   return (
     <div className="flex flex-col min-h-screen">
@@ -275,7 +280,11 @@ const Blog = () => {
           <div className="container mx-auto px-4">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {blogPosts.map((post) => (
-                <Card key={post.id} className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group">
+                <Card 
+                  key={post.id} 
+                  className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+                  onClick={() => handlePostClick(post.id)}
+                >
                   <div className="relative overflow-hidden rounded-t-lg">
                     <img 
                       src={post.image} 
