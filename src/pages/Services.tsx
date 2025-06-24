@@ -4,6 +4,7 @@ import { Check } from "lucide-react";
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import { Badge } from "@/components/ui/badge";
 
 const ServiceSection = ({ 
   id, 
@@ -77,13 +78,15 @@ const PackageCard = ({
   price, 
   description, 
   features, 
-  highlighted = false 
+  highlighted = false,
+  onSale = false
 }: { 
   title: string; 
   price: string; 
   description: string; 
   features: string[]; 
   highlighted?: boolean;
+  onSale?: boolean;
 }) => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -124,10 +127,19 @@ const PackageCard = ({
 
   return (
     <div 
-      className={`rounded-lg shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 ${
+      className={`rounded-lg shadow-lg p-8 transition-all duration-300 hover:-translate-y-2 relative ${
         highlighted ? 'bg-copywriter-navy text-white border-4 border-copywriter-yellow' : 'bg-white'
       }`}
     >
+      {onSale && (
+        <Badge 
+          variant="destructive" 
+          className="absolute -top-2 -right-2 bg-red-500 text-white font-bold px-3 py-1 text-sm animate-pulse"
+        >
+          Sale!
+        </Badge>
+      )}
+      
       <h3 className={`text-2xl font-bold mb-2 ${highlighted ? 'text-copywriter-yellow' : 'text-copywriter-navy'}`}>
         {title}
       </h3>
@@ -245,7 +257,7 @@ const Services = () => {
   const packages = [
     {
       title: "Essential",
-      price: "$99.99",
+      price: "$20.00",
       description: "Perfect for small businesses looking to improve specific pieces of copy.",
       features: [
         "Single page website copy OR",
@@ -254,11 +266,12 @@ const Services = () => {
         "2 rounds of revisions",
         "SEO best practices",
         "Delivered within 7 business days"
-      ]
+      ],
+      onSale: true
     },
     {
       title: "Professional",
-      price: "$299.99",
+      price: "$100.00",
       description: "Comprehensive solution for businesses needing full website or campaign copy.",
       features: [
         "Full 5-page website copy OR",
@@ -269,7 +282,8 @@ const Services = () => {
         "Content strategy consultation",
         "Delivered within 14 business days"
       ],
-      highlighted: true
+      highlighted: true,
+      onSale: true
     },
     {
       title: "Enterprise",
@@ -382,6 +396,7 @@ const Services = () => {
                 description={pkg.description}
                 features={pkg.features}
                 highlighted={pkg.highlighted}
+                onSale={pkg.onSale}
               />
             ))}
           </div>
