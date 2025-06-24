@@ -134,9 +134,9 @@ const PackageCard = ({
       {onSale && (
         <Badge 
           variant="destructive" 
-          className="absolute -top-2 -right-2 bg-red-500 text-white font-bold px-3 py-1 text-sm animate-pulse"
+          className="absolute -top-3 -right-3 bg-red-500 text-white font-bold px-4 py-2 text-lg animate-pulse shadow-lg transform rotate-12 z-10"
         >
-          Sale!
+          SALE!
         </Badge>
       )}
       
