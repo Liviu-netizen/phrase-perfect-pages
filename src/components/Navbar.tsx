@@ -33,7 +33,7 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item) => (
+          {['Home', 'About', 'Services', 'Portfolio', 'Blog', 'Contact'].map((item) => (
             <Link
               key={item}
               to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
@@ -76,7 +76,7 @@ const Navbar = () => {
           mobileMenuOpen ? "max-h-80 opacity-100" : "max-h-0 opacity-0"
         )}>
           <div className="flex flex-col items-center space-y-4 py-4">
-            {['Home', 'About', 'Services', 'Portfolio', 'Contact'].map((item, index) => (
+            {['Home', 'About', 'Services', 'Portfolio', 'Blog', 'Contact'].map((item, index) => (
               <Link
                 key={item}
                 to={item === 'Home' ? '/' : `/${item.toLowerCase()}`}
