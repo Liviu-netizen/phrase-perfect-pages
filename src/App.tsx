@@ -18,6 +18,7 @@ import ChatAdminPage from "./pages/ChatAdmin";
 import ScrollToTop from "./components/ScrollToTop";
 import FloatingChatbot from "./components/chat/FloatingChatbot";
 import BlogAdmin from "./pages/BlogAdmin";
+import NewsletterAdmin from "./pages/NewsletterAdmin";
 
 // Analytics tracker component
 const PageTracker = () => {
@@ -65,6 +66,7 @@ const App = () => {
             <Route path="/payment-success" element={<PaymentSuccess />} />
             <Route path="/chat-admin" element={<ChatAdminPage />} />
             <Route path="/blog-admin" element={<BlogAdmin />} />
+            <Route path="/admin-newsletter/NLnl19952004#" element={<NewsletterAdmin />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
           <FloatingChatbot />

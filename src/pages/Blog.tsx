@@ -5,6 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Calendar, User, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import NewsletterSubscribe from "@/components/NewsletterSubscribe";
 
 interface BlogPost {
   id: number;
@@ -134,16 +135,7 @@ const Blog = () => {
             <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
               Get the latest copywriting tips, strategies, and insights delivered straight to your inbox.
             </p>
-            <div className="max-w-md mx-auto flex gap-4">
-              <input 
-                type="email" 
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 rounded-lg text-gray-900"
-              />
-              <button className="btn-primary">
-                Subscribe
-              </button>
-            </div>
+            <NewsletterSubscribe />
           </div>
         </section>
       </main>
