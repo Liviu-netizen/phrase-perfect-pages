@@ -1,3 +1,4 @@
+
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -6,13 +7,14 @@ import { Calendar, User, Clock } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import NewsletterSubscribe from "@/components/NewsletterSubscribe";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BlogPost {
   id: number;
   title: string;
   category: string;
   excerpt: string;
-  readTime: string;
+  read_time: string;
   date: string;
   image: string;
 }
@@ -29,30 +31,28 @@ const Blog = () => {
   console.log("Rendering Blog page");
   const navigate = useNavigate();
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Load blog posts from localStorage or use defaults
-    const savedPosts = localStorage.getItem('blogPosts');
-    if (savedPosts) {
-      setBlogPosts(JSON.parse(savedPosts));
-    } else {
-      // Default posts if none exist in localStorage
-      const defaultPosts: BlogPost[] = [
-        {
-          id: 1,
-          title: "How to Write Website Copy That Actually Converts Visitors into Customers",
-          category: "SEO & Strategy",
-          excerpt: "Discover the proven strategies and techniques that turn casual browsers into paying customers through compelling website copy.",
-          readTime: "8 min read",
-          date: "Dec 20, 2024",
-          image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop"
-        }
-        // Add more default posts as needed
-      ];
-      setBlogPosts(defaultPosts);
-      localStorage.setItem('blogPosts', JSON.stringify(defaultPosts));
-    }
+    loadBlogPosts();
   }, []);
+
+  const loadBlogPosts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setBlogPosts(data || []);
+    } catch (error) {
+      console.error('Error loading blog posts:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handlePostClick = (postId: number) => {
     navigate(`/blog/${postId}`);
@@ -77,54 +77,64 @@ const Blog = () => {
         {/* Blog Posts Grid */}
         <section className="py-16 bg-gray-50">
           <div className="container mx-auto px-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {blogPosts.map((post) => (
-                <Card 
-                  key={post.id} 
-                  className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
-                  onClick={() => handlePostClick(post.id)}
-                >
-                  <div className="relative overflow-hidden rounded-t-lg">
-                    <img 
-                      src={post.image} 
-                      alt={post.title}
-                      className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
-                    />
-                    <Badge 
-                      className={`absolute top-3 left-3 ${categoryColors[post.category as keyof typeof categoryColors]}`}
-                    >
-                      {post.category}
-                    </Badge>
-                  </div>
-                  <CardHeader>
-                    <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-200">
-                      {post.title}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-gray-600 text-sm mb-4 line-clamp-3">
-                      {post.excerpt}
-                    </p>
-                    <div className="flex items-center justify-between text-xs text-gray-500">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex items-center space-x-1">
-                          <Calendar className="w-3 h-3" />
-                          <span>{post.date}</span>
-                        </div>
-                        <div className="flex items-center space-x-1">
-                          <Clock className="w-3 h-3" />
-                          <span>{post.readTime}</span>
-                        </div>
-                      </div>
-                      <div className="flex items-center space-x-1">
-                        <User className="w-3 h-3" />
-                        <span>Liviu M.C.</span>
-                      </div>
+            {loading ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">Loading blog posts...</p>
+              </div>
+            ) : blogPosts.length === 0 ? (
+              <div className="text-center py-12">
+                <p className="text-gray-600">No blog posts available yet.</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {blogPosts.map((post) => (
+                  <Card 
+                    key={post.id} 
+                    className="hover:shadow-lg transition-shadow duration-300 cursor-pointer group"
+                    onClick={() => handlePostClick(post.id)}
+                  >
+                    <div className="relative overflow-hidden rounded-t-lg">
+                      <img 
+                        src={post.image} 
+                        alt={post.title}
+                        className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                      <Badge 
+                        className={`absolute top-3 left-3 ${categoryColors[post.category as keyof typeof categoryColors]}`}
+                      >
+                        {post.category}
+                      </Badge>
                     </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+                    <CardHeader>
+                      <CardTitle className="text-lg leading-tight group-hover:text-primary transition-colors duration-200">
+                        {post.title}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+                        {post.excerpt}
+                      </p>
+                      <div className="flex items-center justify-between text-xs text-gray-500">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex items-center space-x-1">
+                            <Calendar className="w-3 h-3" />
+                            <span>{post.date}</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <Clock className="w-3 h-3" />
+                            <span>{post.read_time}</span>
+                          </div>
+                        </div>
+                        <div className="flex items-center space-x-1">
+                          <User className="w-3 h-3" />
+                          <span>Liviu M.C.</span>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
           </div>
         </section>
 

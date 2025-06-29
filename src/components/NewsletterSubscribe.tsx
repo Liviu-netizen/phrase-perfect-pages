@@ -3,6 +3,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 const NewsletterSubscribe = () => {
   const [email, setEmail] = useState("");
@@ -33,37 +34,30 @@ const NewsletterSubscribe = () => {
     setIsSubscribing(true);
 
     try {
-      // Get existing subscribers or initialize empty array
-      const existingSubscribers = JSON.parse(localStorage.getItem('newsletterSubscribers') || '[]');
-      
-      // Check if email already exists
-      if (existingSubscribers.find((subscriber: any) => subscriber.email === email)) {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .insert([{ email }]);
+
+      if (error) {
+        // Check if it's a duplicate email error
+        if (error.code === '23505') {
+          toast({
+            title: "Already subscribed",
+            description: "This email is already subscribed to our newsletter",
+            variant: "destructive",
+          });
+        } else {
+          throw error;
+        }
+      } else {
         toast({
-          title: "Already subscribed",
-          description: "This email is already subscribed to our newsletter",
-          variant: "destructive",
+          title: "Success!",
+          description: "You've been subscribed to our newsletter",
         });
-        setIsSubscribing(false);
-        return;
+        setEmail("");
       }
-
-      // Add new subscriber
-      const newSubscriber = {
-        id: Date.now(),
-        email,
-        subscribedAt: new Date().toISOString(),
-      };
-
-      existingSubscribers.push(newSubscriber);
-      localStorage.setItem('newsletterSubscribers', JSON.stringify(existingSubscribers));
-
-      toast({
-        title: "Success!",
-        description: "You've been subscribed to our newsletter",
-      });
-
-      setEmail("");
     } catch (error) {
+      console.error('Error subscribing to newsletter:', error);
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",

@@ -1,3 +1,4 @@
+
 import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import Navbar from "@/components/Navbar";
@@ -5,13 +6,14 @@ import Footer from "@/components/Footer";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Calendar, User, Clock, ArrowLeft } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BlogPost {
   id: number;
   title: string;
   category: string;
   excerpt: string;
-  readTime: string;
+  read_time: string;
   date: string;
   image: string;
   content: string;
@@ -29,17 +31,47 @@ const BlogPost = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [blogPost, setBlogPost] = useState<BlogPost | null>(null);
+  const [loading, setLoading] = useState(true);
   
   useEffect(() => {
-    // Load blog posts from localStorage and find the specific post
-    const savedPosts = localStorage.getItem('blogPosts');
-    if (savedPosts) {
-      const posts: BlogPost[] = JSON.parse(savedPosts);
-      const post = posts.find(p => p.id === parseInt(id || ''));
-      setBlogPost(post || null);
+    if (id) {
+      loadBlogPost(parseInt(id));
     }
   }, [id]);
+
+  const loadBlogPost = async (postId: number) => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .eq('id', postId)
+        .single();
+
+      if (error) throw error;
+      setBlogPost(data);
+    } catch (error) {
+      console.error('Error loading blog post:', error);
+      setBlogPost(null);
+    } finally {
+      setLoading(false);
+    }
+  };
   
+  if (loading) {
+    return (
+      <div className="flex flex-col min-h-screen">
+        <Navbar />
+        <main className="flex-grow flex items-center justify-center">
+          <div className="text-center">
+            <p className="text-gray-600">Loading blog post...</p>
+          </div>
+        </main>
+        <Footer />
+      </div>
+    );
+  }
+
   if (!blogPost) {
     return (
       <div className="flex flex-col min-h-screen">
@@ -94,7 +126,7 @@ const BlogPost = () => {
                 </div>
                 <div className="flex items-center space-x-1">
                   <Clock className="w-4 h-4" />
-                  <span>{blogPost.readTime}</span>
+                  <span>{blogPost.read_time}</span>
                 </div>
               </div>
               

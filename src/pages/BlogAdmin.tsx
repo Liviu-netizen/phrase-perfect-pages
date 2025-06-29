@@ -11,13 +11,14 @@ import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, Edit, Trash2, Save, X, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
 
 interface BlogPost {
   id: number;
   title: string;
   category: string;
   excerpt: string;
-  readTime: string;
+  read_time: string;
   date: string;
   image: string;
   content?: string;
@@ -26,7 +27,7 @@ interface BlogPost {
 interface Subscriber {
   id: number;
   email: string;
-  subscribedAt: string;
+  subscribed_at: string;
 }
 
 const categoryColors = {
@@ -47,51 +48,59 @@ const BlogAdmin = () => {
   const [editingPost, setEditingPost] = useState<BlogPost | null>(null);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
 
-  // Updated access key to match the newsletter admin
   const ADMIN_ACCESS_KEY = "NLnl19952004#";
 
   useEffect(() => {
-    // Load initial blog posts data
-    const initialPosts: BlogPost[] = [
-      {
-        id: 1,
-        title: "How to Write Website Copy That Actually Converts Visitors into Customers",
-        category: "SEO & Strategy",
-        excerpt: "Discover the proven strategies and techniques that turn casual browsers into paying customers through compelling website copy.",
-        readTime: "8 min read",
-        date: "Dec 20, 2024",
-        image: "https://images.unsplash.com/photo-1649972904349-6e44c42644a7?w=400&h=250&fit=crop",
-        content: "Sample content for blog post 1..."
-      },
-      {
-        id: 2,
-        title: "The 7 Most Common Copywriting Mistakes (And How to Fix Them)",
-        category: "SEO & Strategy",
-        excerpt: "Learn about the critical copywriting errors that could be costing you sales and how to avoid them.",
-        readTime: "6 min read",
-        date: "Dec 18, 2024",
-        image: "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=400&h=250&fit=crop",
-        content: "Sample content for blog post 2..."
-      }
-    ];
-    
-    const savedPosts = localStorage.getItem('blogPosts');
-    if (savedPosts) {
-      setPosts(JSON.parse(savedPosts));
-    } else {
-      setPosts(initialPosts);
-      localStorage.setItem('blogPosts', JSON.stringify(initialPosts));
+    if (isAuthenticated) {
+      loadBlogPosts();
+      loadSubscribers();
     }
+  }, [isAuthenticated]);
 
-    // Load newsletter subscribers
-    const savedSubscribers = localStorage.getItem('newsletterSubscribers');
-    if (savedSubscribers) {
-      setSubscribers(JSON.parse(savedSubscribers));
+  const loadBlogPosts = async () => {
+    try {
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('blog_posts')
+        .select('*')
+        .order('created_at', { ascending: false });
+
+      if (error) throw error;
+      setPosts(data || []);
+    } catch (error) {
+      console.error('Error loading blog posts:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load blog posts",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
     }
-  }, []);
+  };
+
+  const loadSubscribers = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('newsletter_subscribers')
+        .select('*')
+        .order('subscribed_at', { ascending: false });
+
+      if (error) throw error;
+      setSubscribers(data || []);
+    } catch (error) {
+      console.error('Error loading subscribers:', error);
+      toast({
+        title: "Error",
+        description: "Failed to load subscribers",
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleLogin = () => {
     if (accessKey === ADMIN_ACCESS_KEY) {
@@ -109,34 +118,93 @@ const BlogAdmin = () => {
     }
   };
 
-  // Blog management functions
-  const handleSavePost = () => {
+  const handleSavePost = async () => {
     if (!editingPost) return;
 
-    const updatedPosts = editingPost.id === 0 
-      ? [...posts, { ...editingPost, id: Math.max(...posts.map(p => p.id)) + 1 }]
-      : posts.map(post => post.id === editingPost.id ? editingPost : post);
+    try {
+      setLoading(true);
+      
+      if (editingPost.id === 0) {
+        // Create new post
+        const { error } = await supabase
+          .from('blog_posts')
+          .insert([{
+            title: editingPost.title,
+            category: editingPost.category,
+            excerpt: editingPost.excerpt,
+            read_time: editingPost.read_time,
+            date: editingPost.date,
+            image: editingPost.image,
+            content: editingPost.content || ""
+          }]);
 
-    setPosts(updatedPosts);
-    localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-    setEditingPost(null);
-    setIsDrawerOpen(false);
-    
-    toast({
-      title: "Post saved",
-      description: editingPost.id === 0 ? "New blog post created successfully." : "Blog post updated successfully.",
-    });
+        if (error) throw error;
+        
+        toast({
+          title: "Post created",
+          description: "New blog post created successfully.",
+        });
+      } else {
+        // Update existing post
+        const { error } = await supabase
+          .from('blog_posts')
+          .update({
+            title: editingPost.title,
+            category: editingPost.category,
+            excerpt: editingPost.excerpt,
+            read_time: editingPost.read_time,
+            date: editingPost.date,
+            image: editingPost.image,
+            content: editingPost.content || ""
+          })
+          .eq('id', editingPost.id);
+
+        if (error) throw error;
+        
+        toast({
+          title: "Post updated",
+          description: "Blog post updated successfully.",
+        });
+      }
+
+      setEditingPost(null);
+      setIsDrawerOpen(false);
+      await loadBlogPosts();
+    } catch (error) {
+      console.error('Error saving post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to save blog post",
+        variant: "destructive",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleDeletePost = (id: number) => {
-    const updatedPosts = posts.filter(post => post.id !== id);
-    setPosts(updatedPosts);
-    localStorage.setItem('blogPosts', JSON.stringify(updatedPosts));
-    
-    toast({
-      title: "Post deleted",
-      description: "Blog post has been removed.",
-    });
+  const handleDeletePost = async (id: number) => {
+    try {
+      const { error } = await supabase
+        .from('blog_posts')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast({
+        title: "Post deleted",
+        description: "Blog post has been removed.",
+      });
+      
+      await loadBlogPosts();
+    } catch (error) {
+      console.error('Error deleting post:', error);
+      toast({
+        title: "Error",
+        description: "Failed to delete blog post",
+        variant: "destructive",
+      });
+    }
   };
 
   const handleNewPost = () => {
@@ -145,7 +213,7 @@ const BlogAdmin = () => {
       title: "",
       category: "SEO & Strategy",
       excerpt: "",
-      readTime: "",
+      read_time: "",
       date: new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }),
       image: "",
       content: ""
@@ -158,22 +226,36 @@ const BlogAdmin = () => {
     setIsDrawerOpen(true);
   };
 
-  // Newsletter management functions
-  const deleteSubscriber = (id: number) => {
-    const updated = subscribers.filter(sub => sub.id !== id);
-    setSubscribers(updated);
-    localStorage.setItem('newsletterSubscribers', JSON.stringify(updated));
-    toast({
-      title: "Subscriber removed",
-      description: "The subscriber has been removed from the list",
-    });
+  const deleteSubscriber = async (id: number) => {
+    try {
+      const { error } = await supabase
+        .from('newsletter_subscribers')
+        .delete()
+        .eq('id', id);
+
+      if (error) throw error;
+      
+      toast({
+        title: "Subscriber removed",
+        description: "The subscriber has been removed from the list",
+      });
+      
+      await loadSubscribers();
+    } catch (error) {
+      console.error('Error deleting subscriber:', error);
+      toast({
+        title: "Error",
+        description: "Failed to remove subscriber",
+        variant: "destructive",
+      });
+    }
   };
 
   const exportSubscribers = () => {
     const csvContent = "data:text/csv;charset=utf-8," 
       + "Email,Subscribed Date\n"
       + subscribers.map(sub => 
-          `${sub.email},${new Date(sub.subscribedAt).toLocaleDateString()}`
+          `${sub.email},${new Date(sub.subscribed_at).toLocaleDateString()}`
         ).join("\n");
 
     const encodedUri = encodeURI(csvContent);
@@ -239,7 +321,7 @@ const BlogAdmin = () => {
           <TabsContent value="blog" className="space-y-6">
             <div className="flex justify-between items-center">
               <h2 className="text-2xl font-semibold">Manage Blog Posts</h2>
-              <Button onClick={handleNewPost}>
+              <Button onClick={handleNewPost} disabled={loading}>
                 <Plus className="w-4 h-4 mr-2" />
                 New Post
               </Button>
@@ -247,51 +329,57 @@ const BlogAdmin = () => {
 
             <Card>
               <CardContent className="pt-6">
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Title</TableHead>
-                      <TableHead>Category</TableHead>
-                      <TableHead>Date</TableHead>
-                      <TableHead>Read Time</TableHead>
-                      <TableHead>Actions</TableHead>
-                    </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {posts.map((post) => (
-                      <TableRow key={post.id}>
-                        <TableCell className="font-medium max-w-xs truncate">
-                          {post.title}
-                        </TableCell>
-                        <TableCell>
-                          <Badge className={categoryColors[post.category as keyof typeof categoryColors]}>
-                            {post.category}
-                          </Badge>
-                        </TableCell>
-                        <TableCell>{post.date}</TableCell>
-                        <TableCell>{post.readTime}</TableCell>
-                        <TableCell>
-                          <div className="flex space-x-2">
-                            <Button
-                              size="sm"
-                              variant="outline"
-                              onClick={() => handleEditPost(post)}
-                            >
-                              <Edit className="w-3 h-3" />
-                            </Button>
-                            <Button
-                              size="sm"
-                              variant="destructive"
-                              onClick={() => handleDeletePost(post.id)}
-                            >
-                              <Trash2 className="w-3 h-3" />
-                            </Button>
-                          </div>
-                        </TableCell>
+                {loading ? (
+                  <div className="text-center py-8">Loading...</div>
+                ) : (
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>Title</TableHead>
+                        <TableHead>Category</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead>Read Time</TableHead>
+                        <TableHead>Actions</TableHead>
                       </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
+                    </TableHeader>
+                    <TableBody>
+                      {posts.map((post) => (
+                        <TableRow key={post.id}>
+                          <TableCell className="font-medium max-w-xs truncate">
+                            {post.title}
+                          </TableCell>
+                          <TableCell>
+                            <Badge className={categoryColors[post.category as keyof typeof categoryColors]}>
+                              {post.category}
+                            </Badge>
+                          </TableCell>
+                          <TableCell>{post.date}</TableCell>
+                          <TableCell>{post.read_time}</TableCell>
+                          <TableCell>
+                            <div className="flex space-x-2">
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                onClick={() => handleEditPost(post)}
+                                disabled={loading}
+                              >
+                                <Edit className="w-3 h-3" />
+                              </Button>
+                              <Button
+                                size="sm"
+                                variant="destructive"
+                                onClick={() => handleDeletePost(post.id)}
+                                disabled={loading}
+                              >
+                                <Trash2 className="w-3 h-3" />
+                              </Button>
+                            </div>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                )}
               </CardContent>
             </Card>
           </TabsContent>
@@ -325,7 +413,7 @@ const BlogAdmin = () => {
                 <CardContent>
                   <div className="text-2xl font-bold">
                     {subscribers.filter(sub => {
-                      const subDate = new Date(sub.subscribedAt);
+                      const subDate = new Date(sub.subscribed_at);
                       const now = new Date();
                       return subDate.getMonth() === now.getMonth() && 
                              subDate.getFullYear() === now.getFullYear();
@@ -342,7 +430,7 @@ const BlogAdmin = () => {
                 <CardContent>
                   <div className="text-2xl font-bold">
                     {subscribers.filter(sub => {
-                      const subDate = new Date(sub.subscribedAt);
+                      const subDate = new Date(sub.subscribed_at);
                       const now = new Date();
                       const weekAgo = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
                       return subDate >= weekAgo;
@@ -382,7 +470,7 @@ const BlogAdmin = () => {
                         <div>
                           <p className="font-medium">{subscriber.email}</p>
                           <p className="text-sm text-gray-500">
-                            Subscribed: {new Date(subscriber.subscribedAt).toLocaleDateString()}
+                            Subscribed: {new Date(subscriber.subscribed_at).toLocaleDateString()}
                           </p>
                         </div>
                         <Button
@@ -437,8 +525,8 @@ const BlogAdmin = () => {
                     <div>
                       <label className="block text-sm font-medium mb-1">Read Time</label>
                       <Input
-                        value={editingPost.readTime}
-                        onChange={(e) => setEditingPost({ ...editingPost, readTime: e.target.value })}
+                        value={editingPost.read_time}
+                        onChange={(e) => setEditingPost({ ...editingPost, read_time: e.target.value })}
                         placeholder="e.g., 5 min read"
                       />
                     </div>
@@ -480,13 +568,14 @@ const BlogAdmin = () => {
                         setIsDrawerOpen(false);
                         setEditingPost(null);
                       }}
+                      disabled={loading}
                     >
                       <X className="w-4 h-4 mr-2" />
                       Cancel
                     </Button>
-                    <Button onClick={handleSavePost}>
+                    <Button onClick={handleSavePost} disabled={loading}>
                       <Save className="w-4 h-4 mr-2" />
-                      Save Post
+                      {loading ? 'Saving...' : 'Save Post'}
                     </Button>
                   </div>
                 </>

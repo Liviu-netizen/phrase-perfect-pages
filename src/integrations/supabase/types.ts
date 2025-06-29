@@ -9,6 +9,45 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
+      blog_posts: {
+        Row: {
+          category: string
+          content: string | null
+          created_at: string | null
+          date: string
+          excerpt: string
+          id: number
+          image: string
+          read_time: string
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          category: string
+          content?: string | null
+          created_at?: string | null
+          date: string
+          excerpt: string
+          id?: number
+          image: string
+          read_time: string
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          category?: string
+          content?: string | null
+          created_at?: string | null
+          date?: string
+          excerpt?: string
+          id?: number
+          image?: string
+          read_time?: string
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       chat_conversations: {
         Row: {
           created_at: string
@@ -70,6 +109,24 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
+      }
+      newsletter_subscribers: {
+        Row: {
+          email: string
+          id: number
+          subscribed_at: string | null
+        }
+        Insert: {
+          email: string
+          id?: number
+          subscribed_at?: string | null
+        }
+        Update: {
+          email?: string
+          id?: number
+          subscribed_at?: string | null
+        }
+        Relationships: []
       }
     }
     Views: {
