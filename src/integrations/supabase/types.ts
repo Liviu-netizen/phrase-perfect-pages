@@ -110,6 +110,42 @@ export type Database = {
           },
         ]
       }
+      media_files: {
+        Row: {
+          created_at: string | null
+          file_size: number
+          file_type: string
+          filename: string
+          id: string
+          original_name: string
+          public_url: string
+          storage_path: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          file_size: number
+          file_type: string
+          filename: string
+          id?: string
+          original_name: string
+          public_url: string
+          storage_path: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          file_size?: number
+          file_type?: string
+          filename?: string
+          id?: string
+          original_name?: string
+          public_url?: string
+          storage_path?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       newsletter_subscribers: {
         Row: {
           email: string

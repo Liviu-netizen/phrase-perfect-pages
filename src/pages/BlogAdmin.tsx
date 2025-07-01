@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -9,9 +8,10 @@ import { Badge } from "@/components/ui/badge";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Plus, Edit, Trash2, Save, X, Download, Mail } from "lucide-react";
+import { Plus, Edit, Trash2, Save, X, Download, Mail, FileImage } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
+import MediaManager from "@/components/MediaManager";
 
 interface BlogPost {
   id: number;
@@ -313,9 +313,10 @@ const BlogAdmin = () => {
         </div>
 
         <Tabs defaultValue="blog" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
+          <TabsList className="grid w-full grid-cols-3">
             <TabsTrigger value="blog">Blog Management</TabsTrigger>
             <TabsTrigger value="newsletter">Newsletter Management</TabsTrigger>
+            <TabsTrigger value="media">Media Management</TabsTrigger>
           </TabsList>
           
           <TabsContent value="blog" className="space-y-6">
@@ -486,6 +487,17 @@ const BlogAdmin = () => {
                 )}
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="media" className="space-y-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold">Media Management</h2>
+              <div className="flex items-center gap-2 text-sm text-gray-500">
+                <FileImage className="w-4 h-4" />
+                Upload and manage your media files
+              </div>
+            </div>
+            <MediaManager />
           </TabsContent>
         </Tabs>
 
