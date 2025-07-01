@@ -12,6 +12,7 @@ import { Plus, Edit, Trash2, Save, X, Download, Mail, FileImage } from "lucide-r
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import MediaManager from "@/components/MediaManager";
+import ImagePicker from "@/components/ImagePicker";
 
 interface BlogPost {
   id: number;
@@ -545,12 +546,34 @@ const BlogAdmin = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium mb-1">Image URL</label>
-                    <Input
-                      value={editingPost.image}
-                      onChange={(e) => setEditingPost({ ...editingPost, image: e.target.value })}
-                      placeholder="Enter image URL"
-                    />
+                    <label className="block text-sm font-medium mb-2">Featured Image</label>
+                    <div className="space-y-3">
+                      <ImagePicker
+                        selectedImage={editingPost.image}
+                        onImageSelect={(url) => setEditingPost({ ...editingPost, image: url })}
+                      />
+                      
+                      {editingPost.image && (
+                        <div className="border rounded-lg p-3">
+                          <p className="text-sm text-gray-600 mb-2">Preview:</p>
+                          <img 
+                            src={editingPost.image} 
+                            alt="Featured image preview" 
+                            className="w-full max-w-md h-32 object-cover rounded"
+                          />
+                        </div>
+                      )}
+                      
+                      <div className="text-sm text-gray-500">
+                        <p>Or enter a custom URL:</p>
+                        <Input
+                          value={editingPost.image}
+                          onChange={(e) => setEditingPost({ ...editingPost, image: e.target.value })}
+                          placeholder="https://example.com/image.jpg"
+                          className="mt-1"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div>
