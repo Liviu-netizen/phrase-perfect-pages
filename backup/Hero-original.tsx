@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 
 const Hero = () => {
@@ -14,10 +13,10 @@ const Hero = () => {
 
       <div className="container mx-auto px-4 text-center z-10 animate-fade-in">
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6">
-          SaaS Copy That <span className="text-copywriter-yellow">Converts</span>
+          Words That <span className="text-copywriter-yellow">Convert</span>
         </h1>
         <h2 className="text-xl md:text-2xl max-w-3xl mx-auto mb-10 text-gray-300 font-playfair">
-          Strategic copywriting that turns trial users into paying customers and features into benefits that sell.
+          Persuasive copywriting that turns visitors into customers and skeptics into believers.
         </h2>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-6">
           <Link to="/services" className="btn-primary">

@@ -1,4 +1,3 @@
-
 import { useNavigate } from 'react-router-dom';
 import { FileText, Globe, Mail } from 'lucide-react';
 
@@ -66,20 +65,20 @@ const ServicesPreview = () => {
   const services = [
     {
       icon: <Globe className="w-12 h-12" />,
-      title: "SaaS Landing Pages",
-      description: "High-converting landing pages that turn visitors into trial users and trials into paid customers.",
+      title: "Website Copy",
+      description: "Persuasive landing pages and website content that converts visitors into customers.",
       link: "/services#website",
     },
     {
       icon: <Mail className="w-12 h-12" />,
-      title: "Onboarding Sequences",
-      description: "Email sequences that reduce churn, increase activation, and drive feature adoption.",
+      title: "Email Campaigns",
+      description: "Engaging email sequences that nurture leads and drive sales.",
       link: "/services#email",
     },
     {
       icon: <FileText className="w-12 h-12" />,
-      title: "Feature Messaging",
-      description: "Product descriptions and announcements that translate features into customer benefits.",
+      title: "Content Writing",
+      description: "SEO-optimized blog posts and articles that establish your authority.",
       link: "/services#content",
     },
   ];
@@ -89,11 +88,11 @@ const ServicesPreview = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-3xl md:text-4xl font-bold mb-4 text-copywriter-navy">
-            How I Help SaaS Companies Grow
+            How I Can Help
           </h2>
           <div className="h-1 w-24 bg-copywriter-yellow mx-auto mb-8"></div>
           <p className="text-lg max-w-2xl mx-auto text-gray-700">
-            I specialize in SaaS copywriting that converts at every stage of your customer journey - from awareness to retention.
+            I offer a range of copywriting services to help your business communicate effectively and convert more customers.
           </p>
         </div>
 
